@@ -25,6 +25,7 @@ Acceptance Criteria
 * THEN the saved events persist
 The following animation demonstrates the application functionality:
 
-## [link to deployed application](https://mechas8703.github.io/05-Work-Day-Scheduler/)
+## [Link to deployed application](https://mechas8703.github.io/05-Work-Day-Scheduler/)
 
 ## * Work Day Scheduler
+![Work day scheduler](./assets/05-third-party-apis-homework-demo.gif)
