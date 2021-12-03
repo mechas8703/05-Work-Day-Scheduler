@@ -7,7 +7,7 @@ $(document).ready(function() {
       };
 }
 // Current Day
-var currentDay = moment().format("dddd, MMMM Do");
+var currentDay = moment().format("dddd, MMMM Do")
 calendar.lastSavedDay = currentDay;
 
 $("#currentDay").text(currentDay);
