@@ -29,6 +29,14 @@ body {
     text-align: center;
     border-radius: 15px;
   }
+
+  .input-group-text {
+    border: none;
+  }
+
+  .form-control {
+    border: none;
+  }
   
   .row {
     white-space: pre-wrap;
