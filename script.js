@@ -1,89 +1,85 @@
-$(document).ready(function() {
-    const SVD_CLNDR_KEY = "work-day-schedule";
-
-    var calendar = {
-        lastSavedDay : "",
-        timeSlots : []
-      };
-}
 // Current Day
-var currentDay = moment().format("dddd, MMMM Do")
-calendar.lastSavedDay = currentDay;
+var currentDate = moment().format('dddd') + " " + moment().format("Do MMM YYYY");
+var currentHour = moment().format('h:mm:ss a');
 
-$("#currentDay").text(currentDay);
+//text hour Var
+var nineAm = $("#9am");
+var tenAm = $("#10am");
+var elevenAm = $("#11am");
+var twelvePm = $("#12pm");
+var onePm = $("#13pm");
+var twoPm = $("#14pm");
+var threePm = $("#15pm");
+var fourPm = $("#16pm");
+var fivePm = $("#17pm");
+var sixPm = $("#18pm");
+var sevenPm = $("#19pm");
 
-// Last Saved Day
-var savedCalendar = localStorage.getItem(SVD_CLNDR_KEY);
+var hour = moment().hours();
+var userInput;
+var hourSpan;
 
-// Did We Find Anything?
-if (savedCalendar) {
-  var tempCalendar = JSON.parse(savedCalendar);
-  if(currentDay === tempCalendar.lastSavedDay)
-    calendar = tempCalendar;
-}
+// Date and Hour
 
-// Current Hour
-var currentHour = moment().hour();
+var interval = setInterval(function() {
+  var momentNow = moment();
+  $('#currentDay').html(momentNow.format('YYYY MMMM DD') + ' '
+                      + momentNow.format('dddd')
+                       .substring(0,3).toUpperCase());
+  $('#currentDay').html(currentDate + " " + momentNow.format('hh:mm:ss A'));
+}, 100);
 
-for (var i = 0; i < 9; i ++) {
-    let index = i + 9;
-    var timeTense;
+function initPage() {
 
-    // Time According to Hour
-    if (moment(index).isBefore(currentHour))
-      timeTense = "past";
-    else if (moment(index).isSame(currentHour))
-      timeTense = "present";
-    else if (moment(index).isAfter(currentHour))
-      timeTense = "future";
+  console.log("Current Hour " + hour);
+  var init9 = JSON.parse(localStorage.getItem("09:00 am"));
+  nineAm.val(init9);
 
-    var textContents = "";
-    var textIndex = -1;
-
-    // Find Text For Current Hour
-    if (calendar.timeSlots)
-      textIndex= calendar.timeSlots.findIndex(timeSlot => timeSlot.id == index);
-
-    // Did We Find Anything?
-    if (textIndex >= 0)
-      textContents = calendar.timeSlots[textIndex].text;
-
-    // Parse Time into Readable Hour
-    var time = moment(index, ["HH.mm"]).format("hA");
-
-    // Create Row
-    createDayRow(index, time, timeTense, textContents);
-}
-
-function createDayRow(index, time, state, textContent)
-{
-  var row = $(`<div class="row time-block">`);
-  $(row).append(`<div class="col-1">`);
-  $(row).append(`<div class="col-1 hour">${time}</div>`);
-  var textArea = $(`<textarea class="col-8 ${state} description" id="text-${index}"></textarea>`);
-  textArea.val(textContent);
-  $(row).append(textArea);
-  $(row).append(`<button class="col-1 btn saveBtn fas fa-save" data-hour="${index}"></button>`);
-
-  $(".container").append(row);
-}
-
-// Save Button Event
-$(".saveBtn").on("click", function(event){
-  var hourId = $(this).attr("data-hour");
-  var textContents = $(`#text-${hourId}`).val();
-  var hourEntry = {
-    id : hourId,
-    text : textContents
-  }
-
-  var wasFound = calendar.timeSlots.findIndex(timeSlot => timeSlot.id == hourId);
-
-  if(wasFound >= 0)
-    calendar.timeSlots.splice(wasFound, 1);
+  var init10 = JSON.parse(localStorage.getItem("10:00 am"))
+  tenAm.val(init10);
   
-  calendar.timeSlots.push(hourEntry);
+  var init11 = JSON.parse(localStorage.getItem("11:00 am"))
+  elevenAm.val(init11);
+  
+  var init12 = JSON.parse(localStorage.getItem("12:00 pm"))
+  twelvePm.val(init12);
+  
+  var init1 = JSON.parse(localStorage.getItem("01:00 pm"))
+  onePm.val(init1);
+  
+  var init2 = JSON.parse(localStorage.getItem("02:00 pm"))
+  twoPm.val(init2);
+  
+  var init3 = JSON.parse(localStorage.getItem("03:00 pm"))
+  threePm.val(init3);
+ 
+  var init4 = JSON.parse(localStorage.getItem("04:00 pm"))
+  fourPm.val(init4);
+  
+  var init5 = JSON.parse(localStorage.getItem("05:00 pm"))
+  fivePm.val(init5);
+  
+  var init6 = JSON.parse(localStorage.getItem("06:00 pm"))
+  sixPm.val(init6);
+  
+  var init7 = JSON.parse(localStorage.getItem("07:00 pm"))
+  sevenPm.val(init7);
+} 
 
-  localStorage.setItem(SVD_CLNDR_KEY, JSON.stringify(calendar));
-});
-
+function background () {
+      
+  $(".form-control").each(function () {
+      var timeTest = parseInt($(this).attr("id"));
+      hour = parseInt(hour);
+      console.log(timeTest);
+      console.log(hour);
+//      console.log(this);
+      if (hour > timeTest) {
+          $(this).addClass("past");
+      } else if (hour < timeTest) {
+          $(this).addClass("future");
+      } else {
+          $(this).addClass("present");
+      }
+  });
+}
